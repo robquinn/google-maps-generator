@@ -1,7 +1,7 @@
 {
   "name": "google-maps-generator",
   "version": "1.0.0",
-  "description": "A project that generate different google maps with drawn polygons and links",
+  "description": "A project that generates different google maps with drawn polygons and links",
   "license": "MIT",
   "author": "Robert Quinn",
   "scripts": {
