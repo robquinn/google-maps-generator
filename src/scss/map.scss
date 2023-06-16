@@ -1,0 +1,63 @@
+@mixin for-phone-only {
+  @media (max-width: 599px) {
+    @content;
+  }
+}
+@mixin for-tablet-portrait-up {
+  @media (min-width: 600px) {
+    @content;
+  }
+}
+@mixin for-tablet-landscape-up {
+  @media (min-width: 900px) {
+    @content;
+  }
+}
+@mixin for-desktop-up {
+  @media (min-width: 1200px) {
+    @content;
+  }
+}
+@mixin for-big-desktop-up {
+  @media (min-width: 1800px) {
+    @content;
+  }
+}
+
+.custom-google-map {
+  height: 90vh;
+  margin: auto !important;
+
+  @include for-phone-only {
+    width: 90vw;
+  }
+  @include for-tablet-portrait-up {
+    width: 90vw;
+  }
+  @include for-tablet-landscape-up {
+    width: 90vw;
+  }
+  @include for-desktop-up {
+    width: 50vw;
+  }
+  @include for-big-desktop-up {
+    width: 50vw;
+  }
+  & img {
+    display: in;
+    margin: 0;
+    position: relative;
+  }
+}
+
+.gm-fullscreen-control > img {
+  position: absolute;
+}
+
+// #desert-mountain-map {
+
+// }
+
+// #north-scottsdale-map {
+
+// }

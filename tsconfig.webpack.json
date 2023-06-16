@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "typeRoots": ["types", "node_modules/@types"]
+  },
+  "ts-node": {
+    "files": true,
+    "compilerOptions": {
+      "target": "ES2016",
+      "esModuleInterop": true,
+      "module": "CommonJS",
+      "skipLibCheck": true,
+      "types": ["google.maps"],
+      "typeRoots": ["types", "node_modules/@types"]
+    }
+  },
+  "include": ["./src/**/*.ts", "./types/**/*.d.ts"]
+}

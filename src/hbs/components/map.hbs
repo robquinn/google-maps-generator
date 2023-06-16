@@ -1,0 +1,9 @@
+{{#each maps}}
+
+  {{> components/title mapTitle=this }}
+
+  <div id='{{this}}-map' class='custom-google-map'></div>
+
+  {{> components/popup areas=(dyanmicObjectLookup ../areas this) }}
+
+{{/each}}

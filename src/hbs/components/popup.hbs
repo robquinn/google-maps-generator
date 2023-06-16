@@ -1,0 +1,9 @@
+{{#each areas}}
+  <div id='{{this.id}}'>
+    {{#if this.link}}
+      <a href='{{{this.link}}}'>{{this.name}}</a>
+    {{else}}
+      <a href='/area/{{this.id}}'>{{this.name}}</a>
+    {{/if}}
+  </div>
+{{/each}}

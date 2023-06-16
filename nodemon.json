@@ -1,0 +1,7 @@
+{
+  "verbose": true,
+  "ignore": ["test"],
+  "exec": "npm run webpack:serve",
+  "watch": ["src/**/*", "webpack.config.ts", "test/**/*"],
+  "ext": "ts,hbs,scss,json"
+}
