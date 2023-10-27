@@ -1,9 +1,12 @@
 import '../scss/index.scss'
+import createCenterControl from './map/create-center-control'
 
 import getMap from './map/get-map'
 import getPolygonColors from './map/get-polygon-colors'
 import initAddMap from './map/init-add-map'
 import mapsAreLoaded from './map/maps-are-loaded'
+import replacePolygonColor from './map/replace-polygon-color'
+import zoomControl from './map/zoom-control'
 
 const maps: Map.Handler[] = []
 
@@ -12,6 +15,8 @@ initAddMap(maps)
 const initGoogleMapsApi = (): void => {
   let map: google.maps.Map
   let popup
+  const controlButton: HTMLElement = createCenterControl()
+  const controlText = controlButton.querySelector('#text') as HTMLElement
   // let infoWindow: google.maps.InfoWindow
 
   maps.forEach(({ mapE, data }: { mapE: HTMLElement; data: Map.Data }) => {
@@ -31,11 +36,50 @@ const initGoogleMapsApi = (): void => {
         fillOpacity: 0.35,
       })
 
+      if (
+        Object.prototype.hasOwnProperty.call(area, 'styles') &&
+        Object.prototype.hasOwnProperty.call(area.styles, 'zIndex')
+      ) {
+        areaPolygon.setOptions({ zIndex: area?.styles?.zIndex })
+      }
+
       areaPolygon.setMap(map)
+
+      areaPolygon.addListener('mouseover', () => {
+        controlText.textContent = area.name
+        areaPolygon.setOptions({
+          fillColor: replacePolygonColor(colors[index], 40),
+        })
+      })
+      areaPolygon.addListener('mouseout', () => {
+        controlText.textContent = 'Search Areas'
+        areaPolygon.setOptions({
+          fillColor: colors[index],
+        })
+      })
 
       area.coords.forEach((coord: google.maps.LatLngLiteral) => {
         latLngBounds.extend(coord)
       })
+
+      google.maps.event.addListener(areaPolygon, 'click', () => {
+        const url = `${window.location.origin}/area/${area.id}`
+        window.location.href = url
+      })
+
+      // const marker = new google.maps.Marker({
+      //   position: { lat: area.popup.lat, lng: area.popup.lng },
+      //   map,
+      //   icon: '../res/img/empty.png',
+      //   label: {
+      //     color: '#000000',
+      //     fontWeight: 'bold',
+      //     className: 'stroke-overlay-text',
+      //     text: area.name,
+      //     fontSize: '10px',
+      //   },
+      // })
+      // marker.setMap(map)
 
       // infoWindow = new google.maps.InfoWindow()
       class Popup extends google.maps.OverlayView {
@@ -108,6 +152,23 @@ const initGoogleMapsApi = (): void => {
       }
     })
     map.fitBounds(latLngBounds, 0)
+
+    // Create the DIV to hold the control.
+    const centerControlDiv = document.createElement('div')
+    // Create the control.
+    const centerControl = controlButton
+    // Append the control to the DIV.
+    centerControlDiv.appendChild(centerControl)
+
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv)
+
+    // Create the DIV to hold the control and call the ZoomControl() constructor
+    // passing in this DIV.
+    const zoomControlDiv = document.createElement('div')
+    zoomControl(zoomControlDiv, map)
+
+    // zoomControlDiv.index = 1
+    map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(zoomControlDiv)
   })
 }
 

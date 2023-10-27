@@ -3,12 +3,16 @@ declare namespace Map {
   interface Area {
     id: string
     name: string
+    styles?: {
+      zIndex?: number
+    }
     popup: {
       lat: number
       lng: number
     }
     coords: google.maps.LatLngLiteral[]
   }
+
   interface Areas {
     areas: Area[]
   }

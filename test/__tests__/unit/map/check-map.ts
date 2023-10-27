@@ -10,6 +10,7 @@ describe('map/checkMap', () => {
     expect(checkMap.default('north-scottsdale')).toBeTruthy()
     expect(checkMap.default('the-valley')).toBeTruthy()
     expect(checkMap.default('desert-mountain')).toBeTruthy()
+    expect(checkMap.default('fountain-hills')).toBeTruthy()
     expect(checkMap.default('a-non-existant-map')).toBeFalsy()
   })
 })

@@ -20,7 +20,9 @@
     "jest:unit": "jest --env jsdom -c jest-unit.config.ts ./test/__tests__/unit",
     "test:unit": "dotenv  -e .env -- run-s jest:unit",
     "jest:integration": "jest --forceExit --detectOpenHandles -c jest-integration.config.ts ./test/__tests__/integration.test.ts",
-    "test:integration": "dotenv -e .env -- run-s jest:integration"
+    "test:integration": "dotenv -e .env -- run-s jest:integration",
+    "test:one": "jest --env jsdom -c jest-unit.config.ts ./test/__tests__/unit/map/init-add-map.ts",
+    "test": "dotenv -e .env -- run-s test:one"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",

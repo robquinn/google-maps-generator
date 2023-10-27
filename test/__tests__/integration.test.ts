@@ -3,7 +3,10 @@ import { exec, type ChildProcess } from 'child_process'
 import * as dotenv from 'dotenv'
 import { type Page } from 'puppeteer'
 import kill from 'tree-kill'
+import _ from 'lodash'
 import trimSpaceBetweenWords from '../../src/ts/utils/trim-space-between-words'
+import mapsEnum from '../../src/ts/map/maps-enum'
+import getMapsArr from '../../src/ts/map/get-maps-arr'
 
 dotenv.config({ path: '../.env' })
 
@@ -52,19 +55,36 @@ describe(`Local setup`, () => {
   })
 
   it('should load map title', async () => {
+    const mapsArr = getMapsArr()
+    const mapNames = mapsArr.map(
+      (mapNumber: number) =>
+        `${_.startCase(mapsEnum.get(mapNumber) as string)} Map`
+    )
     const titleSelector = 'h2'
-    const container = await page.$(titleSelector)
-    const value = await page.evaluate((el) => el?.textContent, container)
-    expect([
-      'Desert Mountain Map',
-      'North Scottsdale Map',
-      'The Valley Map',
-    ]).toContain(trimSpaceBetweenWords(value as string))
+    const titlesRaw = await page.evaluate((sel) => {
+      const elements = Array.from(document.querySelectorAll(sel))
+      const headers = elements.map((element) => {
+        return element.textContent
+      })
+      return headers
+    }, titleSelector)
+    const titles = titlesRaw.map((title: string | null) => {
+      return trimSpaceBetweenWords(title as string)
+    })
+    expect(titles).toEqual(mapNames)
   })
   it('should load map', async () => {
-    const mapSelector = '#desert-mountain-map'
-    const container = await page.$(mapSelector)
-    const value = await page.evaluate((el) => el?.childNodes.length, container)
-    expect((value != null ? value : 0) > 0).toBeTruthy()
+    const mapsArr = getMapsArr()
+    for (let i = 0; i < mapsArr.length; i += 1) {
+      const mapSelector = `#${mapsEnum.get(mapsArr[i]) as string}-map`
+      // eslint-disable-next-line no-await-in-loop
+      const container = await page.$(mapSelector)
+      // eslint-disable-next-line no-await-in-loop
+      const value = await page.evaluate(
+        (el) => el?.childNodes.length,
+        container
+      )
+      expect((value != null ? value : 0) > 0).toBeTruthy()
+    }
   })
 })

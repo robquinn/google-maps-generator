@@ -5,12 +5,12 @@ const getMap = ({ mapE, data }: Map.Handler): google.maps.Map => {
     zoom: data.center.zoom,
     center: { lat: data.center.lat, lng: data.center.lng },
     mapTypeId: 'terrain',
-    zoomControl: true,
+    zoomControl: false,
     mapTypeControl: true,
-    scaleControl: true,
-    streetViewControl: true,
-    rotateControl: true,
-    fullscreenControl: true,
+    scaleControl: false,
+    streetViewControl: false,
+    rotateControl: false,
+    fullscreenControl: false,
   })
 }
 
